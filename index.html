@@ -1,0 +1,415 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CloudShare | File Manager</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+header {
+    background: #2563eb;
+    color: white;
+    padding: 22px 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 25px;
+}
+
+header span {
+    color: #bfdbfe;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 35px auto;
+    padding: 0 20px;
+}
+
+.welcome {
+    margin-bottom: 25px;
+}
+
+.welcome h2 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.welcome p {
+    color: #64748b;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: white;
+    padding: 22px;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px #0f172a0b;
+}
+
+.card .icon {
+    font-size: 26px;
+    margin-bottom: 14px;
+}
+
+.card p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.card h3 {
+    font-size: 25px;
+    margin: 8px 0;
+}
+
+.progress {
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 10px;
+    margin-top: 12px;
+    overflow: hidden;
+}
+
+.progress div {
+    height: 100%;
+    width: 35%;
+    background: #2563eb;
+}
+
+.files-section {
+    background: white;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px #0f172a0b;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+button, .upload-label {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 11px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover, .upload-label:hover {
+    background: #1d4ed8;
+}
+
+input[type="search"] {
+    padding: 11px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    min-width: 180px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px 10px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 14px;
+}
+
+th {
+    color: #64748b;
+    font-weight: 600;
+}
+
+.file-name {
+    font-weight: bold;
+}
+
+.file-type {
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.action-btn {
+    padding: 8px 10px;
+    margin: 2px;
+    font-size: 12px;
+}
+
+.delete-btn {
+    background: #dc2626;
+}
+
+.delete-btn:hover {
+    background: #b91c1c;
+}
+
+footer {
+    text-align: center;
+    color: #64748b;
+    padding: 30px 15px;
+    font-size: 13px;
+}
+
+#message {
+    color: #15803d;
+    margin: 12px 0;
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    header {
+        padding: 20px;
+    }
+
+    .welcome h2 {
+        font-size: 23px;
+    }
+
+    .files-section {
+        padding: 15px;
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 520px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>☁ Cloud<span>Share</span></h1>
+    <div>My Workspace</div>
+</header>
+
+<main class="container">
+
+    <section class="welcome">
+        <h2>My Cloud Dashboard</h2>
+        <p>Manage your files in one simple workspace.</p>
+    </section>
+
+    <section class="stats">
+        <div class="card">
+            <div class="icon">📁</div>
+            <p>Total Files</p>
+            <h3 id="fileCount">3</h3>
+            <p>Files in this session</p>
+        </div>
+
+        <div class="card">
+            <div class="icon">💾</div>
+            <p>Selected File Storage</p>
+            <h3 id="storage">0 KB</h3>
+            <div class="progress"><div></div></div>
+            <p style="margin-top:8px">Illustrative storage overview</p>
+        </div>
+
+        <div class="card">
+            <div class="icon">🔒</div>
+            <p>Workspace</p>
+            <h3>Private</h3>
+            <p>Local browser demonstration</p>
+        </div>
+    </section>
+
+    <section class="files-section">
+        <h2>My Files</h2>
+        <p style="color:#64748b;margin-top:8px">
+            Select files from your device to view them here.
+        </p>
+
+        <div class="toolbar">
+            <label class="upload-label" for="fileInput">
+                + Select Files
+            </label>
+            <input type="file" id="fileInput" multiple>
+
+            <input type="search" id="search"
+                   placeholder="Search files..."
+                   aria-label="Search files">
+        </div>
+
+        <p id="message" aria-live="polite"></p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>File Name</th>
+                    <th>Size</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="fileList"></tbody>
+        </table>
+    </section>
+
+</main>
+
+<footer>
+    Cloud Computing Mini Project | CloudShare File Manager
+</footer>
+
+<script>
+const input = document.getElementById("fileInput");
+const list = document.getElementById("fileList");
+const search = document.getElementById("search");
+const message = document.getElementById("message");
+
+let files = [
+    { name: "Project_Report.pdf", size: 245000, sample: true },
+    { name: "Presentation.pptx", size: 520000, sample: true },
+    { name: "Notes.txt", size: 12000, sample: true }
+];
+
+function formatSize(bytes) {
+    if (bytes < 1024) return bytes + " B";
+    if (bytes < 1024 * 1024)
+        return (bytes / 1024).toFixed(1) + " KB";
+    return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+}
+
+function renderFiles() {
+    list.replaceChildren();
+
+    const query = search.value.toLowerCase();
+    const visibleFiles = files.filter(file =>
+        file.name.toLowerCase().includes(query)
+    );
+
+    visibleFiles.forEach(file => {
+        const row = document.createElement("tr");
+
+        const nameCell = document.createElement("td");
+        const name = document.createElement("div");
+        name.className = "file-name";
+        name.textContent = "📄 " + file.name;
+        nameCell.appendChild(name);
+
+        const sizeCell = document.createElement("td");
+        sizeCell.textContent = formatSize(file.size);
+
+        const actionCell = document.createElement("td");
+
+        if (file.sample) {
+            const sampleLabel = document.createElement("span");
+            sampleLabel.textContent = "Sample file";
+            sampleLabel.style.color = "#64748b";
+            actionCell.appendChild(sampleLabel);
+        } else {
+            const download = document.createElement("button");
+            download.className = "action-btn";
+            download.textContent = "Download";
+            download.onclick = () => downloadFile(file);
+            actionCell.appendChild(download);
+
+            const remove = document.createElement("button");
+            remove.className = "action-btn delete-btn";
+            remove.textContent = "Remove";
+            remove.onclick = () => {
+                files = files.filter(item => item.id !== file.id);
+                message.textContent = "File removed from the list.";
+                renderFiles();
+            };
+            actionCell.appendChild(remove);
+        }
+
+        row.append(nameCell, sizeCell, actionCell);
+        list.appendChild(row);
+    });
+
+    document.getElementById("fileCount").textContent = files.length;
+
+    const total = files
+        .filter(file => !file.sample)
+        .reduce((sum, file) => sum + file.size, 0);
+
+    document.getElementById("storage").textContent = formatSize(total);
+
+    if (visibleFiles.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        cell.colSpan = 3;
+        cell.textContent = "No matching files found.";
+        row.appendChild(cell);
+        list.appendChild(row);
+    }
+}
+
+function downloadFile(file) {
+    const url = URL.createObjectURL(file.blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = file.name;
+    link.click();
+    URL.revokeObjectURL(url);
+}
+
+input.addEventListener("change", () => {
+    const selected = Array.from(input.files);
+
+    selected.forEach(file => {
+        files.push({
+            id: Date.now() + Math.random(),
+            name: file.name,
+            size: file.size,
+            blob: file,
+            sample: false
+        });
+    });
+
+    message.textContent = selected.length
+        ? selected.length + " file(s) added to the list for this session."
+        : "";
+
+    input.value = "";
+    renderFiles();
+});
+
+search.addEventListener("input", renderFiles);
+
+renderFiles();
+</script>
+
+</body>
+</html>
+```
