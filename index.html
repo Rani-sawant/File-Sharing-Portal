@@ -1,295 +1,1126 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#f6f8fc">
-    <title>CloudShare Pro | Cloud Workspace</title>
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101426">
+<title>CloudShare — Your Digital Space</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg: #f6f7fb;
+  --panel: #ffffff;
+  --panel2: #f9faff;
+  --text: #20243a;
+  --muted: #9298ad;
+  --line: #eaecf3;
+  --purple: #7665f5;
+  --purple2: #a49aff;
+  --green: #34b99a;
+  --shadow: 0 12px 40px rgba(35,40,80,.055);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 14px 'DM Sans', sans-serif;
+  transition: background .25s, color .25s;
+}
+
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 3px solid #b8b0ff;
+  outline-offset: 3px;
+}
+button:disabled { opacity: .5; cursor: not-allowed; }
+
+.app { min-height: 100vh; }
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 10;
+  width: 245px;
+  display: flex;
+  flex-direction: column;
+  padding: 27px 19px 18px;
+  background: var(--panel);
+  border-right: 1px solid var(--line);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 0 7px;
+  color: var(--text);
+  font: 800 21px Manrope, sans-serif;
+  letter-spacing: -1px;
+}
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 39px;
+  height: 39px;
+  border-radius: 13px;
+  background: linear-gradient(135deg,#9184ff,#6653ec);
+  color: white;
+  font-size: 23px;
+  box-shadow: 0 7px 18px #7665f54a;
+}
+.brand small {
+  display: block;
+  margin-top: -2px;
+  color: var(--muted);
+  font: 500 10px 'DM Sans',sans-serif;
+  letter-spacing: 1.2px;
+}
+
+.nav-label {
+  margin: 36px 10px 12px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+.nav { display: grid; gap: 6px; }
+.nav button {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  padding: 12px 13px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: #81879d;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  transition: .2s;
+}
+.nav button span { width: 20px; font-size: 17px; text-align: center; }
+.nav button:hover { background: var(--panel2); color: var(--purple); }
+.nav button.active {
+  background: #f0edff;
+  color: #6f5af0;
+}
+.nav .count {
+  margin-left: auto;
+  font-size: 10px;
+}
+
+.side-promo {
+  margin-top: auto;
+  padding: 19px 16px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: linear-gradient(145deg,#f0edff,#f9f5ff);
+  border: 1px solid #ebe6ff;
+}
+.promo-symbol {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  background: white;
+  color: var(--purple);
+  font-size: 20px;
+}
+.side-promo h3 { margin-top: 14px; font: 800 13px Manrope,sans-serif; }
+.side-promo p { margin-top: 6px; color: #8587a1; font-size: 11px; line-height: 1.7; }
+.promo-tag {
+  display: inline-block;
+  margin-top: 13px;
+  padding: 6px 9px;
+  border-radius: 7px;
+  background: white;
+  color: #705cf1;
+  font-size: 10px;
+  font-weight: 700;
+}
+.side-bottom {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 15px 2px 0;
+  border-top: 1px solid var(--line);
+}
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: linear-gradient(135deg,#ffe2ce,#ffbda7);
+  color: #99563f;
+  font-weight: 800;
+}
+.side-bottom strong { display: block; font-size: 11px; }
+.side-bottom small { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; }
+
+main { margin-left: 245px; min-width: 0; }
+
+.topbar {
+  height: 76px;
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 38px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+.breadcrumb { color: var(--muted); font-size: 12px; }
+.breadcrumb strong { color: var(--text); }
+.breadcrumb span { margin: 0 9px; color: #c4c7d5; }
+.top-actions { display: flex; align-items: center; gap: 12px; }
+.top-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #7e879d;
+  font-size: 11px;
+}
+.green-dot { width: 7px; height: 7px; border-radius: 50%; background: #35c39a; }
+.theme-btn, .menu-btn {
+  display: grid;
+  place-items: center;
+  width: 37px;
+  height: 37px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--panel);
+  color: var(--text);
+  font-size: 17px;
+}
+.menu-btn { display: none; }
+
+.content { max-width: 1500px; margin: auto; padding: 34px 38px 25px; }
+.welcome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 26px;
+}
+.eyebrow {
+  color: var(--purple);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+}
+h1, h2, h3 { font-family: Manrope,'DM Sans',sans-serif; }
+h1 { margin-top: 8px; font-size: clamp(25px,2.7vw,34px); letter-spacing: -1.5px; }
+.welcome p { margin-top: 7px; color: var(--muted); font-size: 12px; }
+
+.primary, .secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 43px;
+  padding: 0 17px;
+  border-radius: 11px;
+  font-size: 12px;
+  font-weight: 700;
+  transition: .2s;
+}
+.primary {
+  border: 0;
+  color: white;
+  background: linear-gradient(135deg,#8978ff,#6954ed);
+  box-shadow: 0 7px 18px #7665f538;
+}
+.primary:hover { transform: translateY(-2px); box-shadow: 0 10px 23px #7665f54a; }
+.secondary { border: 1px solid var(--line); background: var(--panel); color: var(--text); }
+.secondary:hover { border-color: var(--purple2); color: var(--purple); }
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 230px;
+  padding: 34px 36px;
+  overflow: hidden;
+  border-radius: 21px;
+  background:
+    radial-gradient(ellipse at 90% 10%,#a99aff 0,transparent 34%),
+    radial-gradient(ellipse at 70% 120%,#4f42be 0,transparent 45%),
+    linear-gradient(112deg,#26264e,#49418f 60%,#7665db);
+  color: white;
+  box-shadow: 0 15px 35px #47408b24;
+}
+.hero-copy { position: relative; z-index: 2; max-width: 430px; }
+.hero-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px;
+  border: 1px solid #ffffff38;
+  border-radius: 8px;
+  background: #ffffff13;
+  color: #e2ddff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.hero h2 { margin-top: 15px; font-size: clamp(22px,2.3vw,30px); line-height: 1.25; letter-spacing: -1px; }
+.hero p { max-width: 330px; margin-top: 10px; color: #dedbff; font-size: 11px; line-height: 1.8; }
+.hero .primary {
+  margin-top: 19px;
+  background: white;
+  color: #5c4dd0;
+  box-shadow: none;
+}
+.hero-art {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 45%;
+  pointer-events: none;
+}
+.glow {
+  position: absolute;
+  width: 230px;
+  height: 230px;
+  right: 52px;
+  top: 10px;
+  border-radius: 50%;
+  background: #ffffff0c;
+  border: 1px solid #ffffff20;
+}
+.glow:before, .glow:after {
+  content: '';
+  position: absolute;
+  inset: 22px;
+  border: 1px solid #ffffff24;
+  border-radius: 50%;
+}
+.glow:after { inset: 48px; }
+.big-cloud {
+  position: absolute;
+  top: 41px;
+  right: 94px;
+  z-index: 2;
+  font-size: 116px;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 14px 25px #1b184d55;
+  filter: drop-shadow(0 0 20px #ffffff25);
+}
+.floating {
+  position: absolute;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 45px;
+  height: 51px;
+  border: 1px solid #ffffff50;
+  border-radius: 10px;
+  background: #ffffff22;
+  color: white;
+  font-size: 9px;
+  font-weight: 800;
+  backdrop-filter: blur(8px);
+}
+.float-a { top: 43px; right: 245px; transform: rotate(-13deg); }
+.float-b { right: 41px; bottom: 34px; transform: rotate(12deg); }
+.float-c { right: 182px; bottom: 21px; transform: rotate(-8deg); }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  gap: 16px;
+  margin-top: 21px;
+}
+.stat {
+  min-width: 0;
+  padding: 19px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  transition: .2s;
+}
+.stat:hover { transform: translateY(-3px); }
+.stat-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--muted); font-size: 10px; }
+.stat-icon { display: grid; place-items: center; width: 35px; height: 35px; border-radius: 11px; font-size: 17px; }
+.purple-bg { background: #f0edff; color: #7965ef; }
+.green-bg { background: #e7f8f1; color: #2ca982; }
+.orange-bg { background: #fff2e3; color: #df963f; }
+.blue-bg { background: #e9f2ff; color: #5385e8; }
+.stat-value { margin-top: 13px; font: 800 27px Manrope,sans-serif; letter-spacing: -1px; overflow-wrap: anywhere; }
+.stat-note { margin-top: 7px; color: var(--muted); font-size: 10px; }
+
+.section { margin-top: 30px; scroll-margin-top: 95px; }
+.section-heading { display: flex; align-items: end; justify-content: space-between; gap: 15px; margin-bottom: 17px; }
+.section-heading h2 { font-size: 17px; letter-spacing: -.5px; }
+.section-heading p { margin-top: 5px; color: var(--muted); font-size: 11px; }
+.link-btn { border: 0; background: transparent; color: var(--purple); font-size: 11px; font-weight: 700; }
+
+.dropzone {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  padding: 21px 23px;
+  border: 1.5px dashed #d3cdfc;
+  border-radius: 16px;
+  background: linear-gradient(110deg,#f3f0ff,#fbfaff);
+  transition: .2s;
+}
+.dropzone.dragging { border-color: var(--purple); background: #ebe7ff; transform: scale(1.005); }
+.upload-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  background: white;
+  color: var(--purple);
+  box-shadow: 0 5px 15px #7565ee12;
+  font-size: 25px;
+}
+.drop-copy { flex: 1; min-width: 0; }
+.drop-copy h3 { font-size: 12px; }
+.drop-copy p { margin-top: 5px; color: #8c91a8; font-size: 10px; line-height: 1.7; }
+.drop-copy small { display: block; margin-top: 4px; color: #aaaec0; font-size: 9px; }
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 17px;
+}
+.search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex: 1;
+  min-width: 100px;
+  height: 42px;
+  padding: 0 13px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--panel);
+  color: var(--muted);
+}
+.search span { font-size: 20px; }
+.search input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--text); font-size: 11px; }
+.search input:focus-visible { outline: none; }
+.toolbar select {
+  max-width: 160px;
+  min-width: 0;
+  height: 42px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--panel);
+  color: var(--text);
+  font-size: 10px;
+}
+
+.file-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 15px; }
+.file-card {
+  min-width: 0;
+  padding: 17px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  transition: transform .2s,border-color .2s;
+}
+.file-card:hover { transform: translateY(-3px); border-color: #d9d3ff; }
+.file-card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.file-type-icon {
+  display: grid;
+  place-items: center;
+  width: 43px;
+  height: 47px;
+  border-radius: 12px;
+  background: #f0edff;
+  color: #7764ef;
+  font-size: 10px;
+  font-weight: 800;
+}
+.file-type-icon.pdf { background: #fff0ed; color: #e56b61; }
+.file-type-icon.image { background: #e8f8f0; color: #31a67d; }
+.file-type-icon.doc { background: #eaf2ff; color: #5482e0; }
+.file-type-icon.other { background: #fff3e4; color: #d9913b; }
+.file-name { margin-top: 16px; overflow: hidden; font: 700 12px Manrope,sans-serif; text-overflow: ellipsis; white-space: nowrap; }
+.file-meta { margin-top: 6px; color: var(--muted); font-size: 10px; }
+.file-card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 18px; padding-top: 13px; border-top: 1px solid var(--line); }
+.file-badge { display: inline-flex; align-items: center; gap: 6px; color: #8a91a5; font-size: 9px; }
+.file-badge:before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #a2a8b9; }
+.file-badge.selected:before { background: #35b990; }
+.file-actions { display: flex; gap: 4px; }
+.small-btn {
+  display: grid;
+  place-items: center;
+  width: 29px;
+  height: 29px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: #9298ad;
+  font-size: 15px;
+}
+.small-btn:hover { border-color: var(--line); background: var(--panel2); color: var(--purple); }
+.small-btn.starred { color: #e6a33d; }
+.small-btn.remove:hover { color: #e65b67; }
+.empty {
+  padding: 45px 15px;
+  border: 1px dashed var(--line);
+  border-radius: 15px;
+  text-align: center;
+  color: var(--muted);
+}
+.empty strong { display: block; margin: 10px 0 5px; color: var(--text); font-size: 14px; }
+.empty p { font-size: 11px; }
+
+.bottom-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 17px; }
+.panel {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+.activity-list { display: grid; gap: 17px; margin-top: 21px; }
+.activity { display: flex; align-items: center; gap: 11px; min-width: 0; }
+.activity-symbol { display: grid; place-items: center; width: 35px; height: 35px; flex-shrink: 0; border-radius: 11px; background: #f0edff; color: var(--purple); font-size: 15px; }
+.activity-copy { flex: 1; min-width: 0; }
+.activity-copy strong { display: block; overflow: hidden; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.activity-copy small { display: block; margin-top: 4px; color: var(--muted); font-size: 9px; }
+.about-text { margin-top: 18px; color: #858ca1; font-size: 11px; line-height: 1.9; }
+.tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 17px; }
+.tags span { padding: 6px 9px; border: 1px solid #e9e5ff; border-radius: 7px; background: #f5f3ff; color: #7663e9; font-size: 9px; font-weight: 700; }
+.notice { display: flex; gap: 9px; margin-top: 18px; padding: 12px; border-radius: 10px; background: #fff7e9; color: #ae7c35; font-size: 10px; line-height: 1.7; }
+
+footer { display: flex; justify-content: space-between; gap: 12px; margin-top: 27px; color: var(--muted); font-size: 9px; }
+
+.toast {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  z-index: 100;
+  max-width: calc(100vw - 40px);
+  padding: 13px 18px;
+  border: 1px solid #ffffff25;
+  border-radius: 12px;
+  background: #25233f;
+  color: white;
+  box-shadow: 0 12px 30px #17132d30;
+  font-size: 12px;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: .25s;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+.overlay { display: none; }
+
+body.dark {
+  --bg: #111321;
+  --panel: #1a1d2e;
+  --panel2: #22253a;
+  --text: #f0f0fc;
+  --muted: #979bb4;
+  --line: #2b2e43;
+  --shadow: 0 12px 40px #00000012;
+}
+body.dark .nav button.active { background: #302b50; color: #c0b7ff; }
+body.dark .side-promo { background: linear-gradient(145deg,#29243f,#242033); border-color: #3a3155; }
+body.dark .promo-symbol { background: #37304e; }
+body.dark .promo-tag { background: #37304e; }
+body.dark .hero { background: linear-gradient(112deg,#222342,#3b3476 60%,#5349a5); }
+body.dark .dropzone { background: #201f37; border-color: #454064; }
+body.dark .dropzone.dragging { background: #30284d; }
+body.dark .upload-icon { background: #35304e; }
+body.dark .file-type-icon { background: #302b50; color: #c0b7ff; }
+body.dark .file-type-icon.pdf { background: #432a35; color: #ffaaa5; }
+body.dark .file-type-icon.image { background: #203b36; color: #80dfb9; }
+body.dark .file-type-icon.doc { background: #24324b; color: #9bbcff; }
+body.dark .file-type-icon.other { background: #423427; color: #f3c084; }
+body.dark .tags span { background: #292640; border-color: #3b3558; color: #c0b7ff; }
+body.dark .notice { background: #332b20; color: #e6ba77; }
+body.dark .activity-symbol { background: #302b50; }
+body.dark .green-dot { box-shadow: 0 0 0 4px #35c39a15; }
+
+@media(max-width:1250px) {
+  .content { padding-left: 25px; padding-right: 25px; }
+  .topbar { padding: 0 25px; }
+  .stats { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .file-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .hero-art { opacity: .7; }
+}
+@media(max-width:850px) {
+  .sidebar { transform: translateX(-100%); transition: transform .25s; box-shadow: none; }
+  .sidebar.open { transform: translateX(0); box-shadow: 12px 0 40px #00000020; }
+  main { margin-left: 0; }
+  .menu-btn { display: grid; flex-shrink: 0; }
+  .topbar { justify-content: flex-start; }
+  .top-actions { margin-left: auto; }
+  .bottom-grid { grid-template-columns: 1fr; }
+  .overlay.show { display: block; position: fixed; inset: 0; z-index: 9; background: #11142665; }
+}
+@media(max-width:560px) {
+  .topbar { height: 65px; padding: 0 15px; gap: 10px; }
+  .breadcrumb { font-size: 10px; }
+  .breadcrumb span { margin: 0 4px; }
+  .top-status { display: none; }
+  .content { padding: 24px 14px 20px; }
+  .welcome { align-items: flex-start; flex-direction: column; }
+  .welcome h1 { font-size: 28px; }
+  .hero { min-height: 240px; padding: 25px 21px; }
+  .hero-copy { max-width: 100%; }
+  .hero h2 { max-width: 245px; font-size: 25px; }
+  .hero p { max-width: 240px; }
+  .hero-art { width: 55%; opacity: .23; }
+  .big-cloud { right: -6px; top: 76px; font-size: 95px; }
+  .glow { right: -60px; top: 30px; }
+  .float-a { right: 105px; top: 28px; }
+  .float-b { right: 5px; bottom: 20px; }
+  .float-c { right: 100px; bottom: 9px; }
+  .stats { gap: 10px; }
+  .stat { padding: 14px; }
+  .stat-value { font-size: 24px; }
+  .stat-head { align-items: flex-start; font-size: 9px; }
+  .stat-icon { width: 30px; height: 30px; font-size: 14px; }
+  .dropzone { flex-wrap: wrap; padding: 17px; gap: 12px; }
+  .drop-copy { flex-basis: calc(100% - 65px); }
+  .dropzone .secondary { width: 100%; }
+  .toolbar { flex-wrap: wrap; }
+  .search { flex-basis: 100%; }
+  .toolbar select { flex: 1; max-width: none; }
+  .file-grid { grid-template-columns: 1fr; }
+  .section-heading h2 { font-size: 16px; }
+  .panel { padding: 18px; }
+  footer { flex-direction: column; line-height: 1.7; }
+}
+</style>
 </head>
+
 <body>
+<div class="app">
+  <div class="overlay" id="overlay"></div>
 
-<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#home">
+      <span class="brand-mark">☁</span>
+      <span>CloudShare<small>YOUR DIGITAL SPACE</small></span>
+    </a>
 
-    <aside class="sidebar" id="sidebar">
-        <a class="brand" href="#">
-            <span class="brand-icon">☁</span>
-            <span>CloudShare<span class="brand-pro"> PRO</span></span>
-        </a>
+    <div class="nav-label">WORKSPACE</div>
+    <nav class="nav">
+      <button class="active" data-view="all" data-target="home"><span>▦</span> Overview</button>
+      <button data-view="all" data-target="files"><span>▤</span> All files <span class="count" id="navCount">03</span></button>
+      <button data-view="recent" data-target="files"><span>◷</span> Recent files</button>
+      <button data-view="favorites" data-target="files"><span>☆</span> Favorites</button>
+    </nav>
 
-        <div class="workspace-label">WORKSPACE</div>
+    <div class="nav-label">YOUR SPACE</div>
+    <nav class="nav">
+      <button data-target="upload"><span>↑</span> Upload center</button>
+      <button data-target="activity"><span>↗</span> Activity</button>
+      <button data-target="about"><span>ⓘ</span> About CloudShare</button>
+    </nav>
 
-        <nav class="navigation">
-            <a href="#dashboard" class="nav-link active">
-                <span>▦</span> Dashboard
-            </a>
-            <a href="#files" class="nav-link">
-                <span>▤</span> My Files
-            </a>
-            <a href="#recent" class="nav-link">
-                <span>◷</span> Recent Files
-            </a>
-            <a href="#favorites" class="nav-link">
-                <span>☆</span> Favorites
-            </a>
-        </nav>
+    <div class="side-promo">
+      <div class="promo-symbol">✧</div>
+      <h3>A little more organized.</h3>
+      <p>Bring your files together and keep your digital workspace tidy.</p>
+      <span class="promo-tag">✦ Made for productivity</span>
+    </div>
 
-        <div class="workspace-label">PREFERENCES</div>
+    <div class="side-bottom">
+      <div class="avatar">CS</div>
+      <div><strong>My Workspace</strong><small>Personal file manager</small></div>
+    </div>
+  </aside>
 
-        <nav class="navigation">
-            <button class="nav-link nav-button" id="themeToggle">
-                <span id="themeIcon">◐</span> Toggle Theme
-            </button>
-            <a href="#about" class="nav-link">
-                <span>ⓘ</span> About Project
-            </a>
-        </nav>
+  <main id="home">
+    <header class="topbar">
+      <button class="menu-btn" id="menuBtn" aria-label="Open navigation">☰</button>
+      <div class="breadcrumb">Workspace <span>/</span> <strong id="breadcrumbTitle">Overview</strong></div>
+      <div class="top-actions">
+        <div class="top-status"><span class="green-dot"></span> Workspace ready</div>
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode" title="Toggle theme">☾</button>
+      </div>
+    </header>
 
-        <div class="sidebar-bottom">
-            <div class="upgrade-icon">✦</div>
-            <h3>Your files, organized.</h3>
-            <p>A smarter workspace for your digital files.</p>
-            <a href="#about" class="sidebar-help">Explore project →</a>
+    <div class="content">
+      <section class="welcome">
+        <div>
+          <div class="eyebrow">YOUR SPACE, YOUR WAY ✦</div>
+          <h1 id="greeting">Welcome back!</h1>
+          <p>Your files, your flow. Everything in one organized space.</p>
+        </div>
+        <button class="primary" id="topUpload">＋ Upload files</button>
+      </section>
+
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="hero-label">✧ YOUR PERSONAL WORKSPACE</span>
+          <h2>A clearer space for everything you create.</h2>
+          <p>Keep your documents close, find what you need, and make room for your next big idea.</p>
+          <button class="primary" id="heroUpload">↑ &nbsp; Add your files</button>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="glow"></div>
+          <div class="floating float-a">PDF</div>
+          <div class="floating float-b">IMG</div>
+          <div class="floating float-c">DOC</div>
+          <div class="big-cloud">☁</div>
+        </div>
+      </section>
+
+      <section class="stats" aria-label="File statistics">
+        <article class="stat">
+          <div class="stat-head">Total files <span class="stat-icon purple-bg">▤</span></div>
+          <div class="stat-value" id="totalFiles">03</div>
+          <div class="stat-note">Files in this workspace</div>
+        </article>
+        <article class="stat">
+          <div class="stat-head">Selected size <span class="stat-icon green-bg">↗</span></div>
+          <div class="stat-value" id="totalSize">0 B</div>
+          <div class="stat-note">Size of selected files</div>
+        </article>
+        <article class="stat">
+          <div class="stat-head">Categories <span class="stat-icon orange-bg">▧</span></div>
+          <div class="stat-value" id="totalCategories">3</div>
+          <div class="stat-note">Different file types</div>
+        </article>
+        <article class="stat">
+          <div class="stat-head">Favorites <span class="stat-icon blue-bg">☆</span></div>
+          <div class="stat-value" id="totalFavorites">0</div>
+          <div class="stat-note">Files you have starred</div>
+        </article>
+      </section>
+
+      <section class="section" id="upload">
+        <div class="section-heading">
+          <div><h2>Bring it all together</h2><p>Drop your files here or select them from your device.</p></div>
+        </div>
+        <div class="dropzone" id="dropzone">
+          <div class="upload-icon">↑</div>
+          <div class="drop-copy">
+            <h3>Drop files to add them to your workspace</h3>
+            <p>Documents, images, PDFs and more. Select multiple files at once.</p>
+            <small>Files are handled locally in your browser.</small>
+          </div>
+          <button class="secondary" id="browseBtn">Browse files ↗</button>
+          <input type="file" id="fileInput" multiple hidden>
+        </div>
+      </section>
+
+      <section class="section" id="files">
+        <div class="section-heading">
+          <div><h2 id="fileHeading">Your files</h2><p id="fileSubtitle">Everything you have added, all in one place.</p></div>
+          <button class="link-btn" id="resetView">View all files ↗</button>
         </div>
 
-        <div class="profile">
-            <div class="avatar">CS</div>
-            <div class="profile-info">
-                <strong>CloudShare User</strong>
-                <span>Personal workspace</span>
-            </div>
-            <span class="profile-menu">•••</span>
+        <div class="toolbar">
+          <label class="search"><span>⌕</span><input id="searchInput" type="search" placeholder="Search your files..." aria-label="Search files"></label>
+          <select id="filterSelect" aria-label="Filter files">
+            <option value="all">All types</option>
+            <option value="pdf">PDF files</option>
+            <option value="image">Images</option>
+            <option value="document">Documents</option>
+            <option value="other">Other files</option>
+          </select>
+          <select id="sortSelect" aria-label="Sort files">
+            <option value="name">Name: A–Z</option>
+            <option value="size">Largest first</option>
+            <option value="newest">Recently added</option>
+          </select>
         </div>
-    </aside>
 
-    <main class="main-content" id="dashboard">
+        <div class="file-grid" id="fileGrid"></div>
+        <div class="empty" id="emptyState" hidden>
+          <div style="font-size:32px">⌕</div>
+          <strong>No files found</strong>
+          <p>Try another search, change your filter, or add a new file.</p>
+        </div>
+      </section>
 
-        <header class="topbar">
-            <button class="menu-toggle" id="menuToggle"
-                    aria-label="Toggle navigation">☰</button>
+      <section class="section bottom-grid">
+        <article class="panel" id="activity">
+          <div class="section-heading">
+            <div><h2>Recent activity</h2><p>Your latest workspace actions.</p></div>
+            <span class="stat-icon purple-bg">◷</span>
+          </div>
+          <div class="activity-list" id="activityList"></div>
+        </article>
 
-            <div class="breadcrumb">
-                Workspace <span>/</span> <strong>Dashboard</strong>
-            </div>
+        <article class="panel" id="about">
+          <div class="section-heading">
+            <div><h2>Meet CloudShare</h2><p>A smarter way to organize files.</p></div>
+            <span class="stat-icon green-bg">✧</span>
+          </div>
+          <p class="about-text">CloudShare is a Cloud Computing mini project that demonstrates a modern file-management experience using browser technologies. Organize, search, sort, favorite and download your selected files through a responsive interface.</p>
+          <div class="tags"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>GitHub Pages</span></div>
+          <div class="notice"><span>ⓘ</span><span>This is a frontend demonstration. Files are not uploaded to a cloud server or shared with other users.</span></div>
+        </article>
+      </section>
 
-            <div class="topbar-right">
-                <span class="status-dot"></span>
-                <span class="online-label">Workspace active</span>
-                <div class="top-avatar">CS</div>
-            </div>
-        </header>
-
-        <section class="page-content">
-
-            <div class="welcome-row">
-                <div>
-                    <p class="eyebrow">YOUR DIGITAL WORKSPACE</p>
-                    <h1>Good to see you! <span>✦</span></h1>
-                    <p class="muted">Manage, organize and explore your files.</p>
-                </div>
-                <button class="primary-button" id="uploadTopButton">
-                    <span>＋</span> Upload files
-                </button>
-            </div>
-
-            <section class="storage-banner">
-                <div class="storage-copy">
-                    <div class="storage-label">
-                        <span class="storage-cloud">☁</span>
-                        STORAGE OVERVIEW
-                    </div>
-                    <h2>Your files. One workspace.</h2>
-                    <p>Keep your documents organized in one place.</p>
-
-                    <div class="storage-progress">
-                        <div class="storage-progress-track">
-                            <div id="storageProgress"></div>
-                        </div>
-                        <span id="storagePercent">0% used</span>
-                    </div>
-                    <div class="storage-caption" id="storageCaption">
-                        Storage figures update as you select files.
-                    </div>
-                </div>
-
-                <div class="banner-art" aria-hidden="true">
-                    <div class="orbit orbit-one"></div>
-                    <div class="orbit orbit-two"></div>
-                    <div class="floating-file file-one">PDF</div>
-                    <div class="floating-file file-two">IMG</div>
-                    <div class="cloud-illustration">☁</div>
-                    <div class="floating-file file-three">DOC</div>
-                </div>
-            </section>
-
-            <section class="stats-grid">
-                <article class="stat-card">
-                    <div class="stat-heading">
-                        <span>Total files</span>
-                        <span class="stat-icon icon-blue">▤</span>
-                    </div>
-                    <div class="stat-number" id="totalFiles">3</div>
-                    <div class="stat-foot">Files in current session</div>
-                </article>
-
-                <article class="stat-card">
-                    <div class="stat-heading">
-                        <span>Selected file size</span>
-                        <span class="stat-icon icon-purple">◫</span>
-                    </div>
-                    <div class="stat-number" id="totalSize">0 KB</div>
-                    <div class="stat-foot">Size of selected files</div>
-                </article>
-
-                <article class="stat-card">
-                    <div class="stat-heading">
-                        <span>File categories</span>
-                        <span class="stat-icon icon-orange">▧</span>
-                    </div>
-                    <div class="stat-number" id="categoryCount">3</div>
-                    <div class="stat-foot">Different file types</div>
-                </article>
-
-                <article class="stat-card">
-                    <div class="stat-heading">
-                        <span>Favorites</span>
-                        <span class="stat-icon icon-green">☆</span>
-                    </div>
-                    <div class="stat-number" id="favoriteCount">0</div>
-                    <div class="stat-foot">Your starred files</div>
-                </article>
-            </section>
-
-            <section class="upload-panel" id="uploadZone">
-                <div class="upload-symbol">↑</div>
-                <div class="upload-text">
-                    <h3>Bring your files together</h3>
-                    <p>Choose files from your device to add them to this session.</p>
-                    <span>File selection happens locally in your browser.</span>
-                </div>
-                <button class="secondary-button" id="browseButton">
-                    Browse files
-                </button>
-                <input type="file" id="fileInput" multiple hidden>
-            </section>
-
-            <section class="files-panel" id="files">
-                <div class="section-heading">
-                    <div>
-                        <h2>My Files</h2>
-                        <p class="muted">Explore and manage your workspace.</p>
-                    </div>
-                    <button class="text-button" id="clearSearch">Clear search</button>
-                </div>
-
-                <div class="file-toolbar">
-                    <div class="search-box">
-                        <span>⌕</span>
-                        <input type="search" id="searchInput"
-                               placeholder="Search files..."
-                               aria-label="Search files">
-                    </div>
-
-                    <select id="typeFilter" aria-label="Filter by file type">
-                        <option value="all">All file types</option>
-                        <option value="pdf">PDF documents</option>
-                        <option value="image">Images</option>
-                        <option value="document">Documents</option>
-                        <option value="other">Other files</option>
-                    </select>
-
-                    <select id="sortSelect" aria-label="Sort files">
-                        <option value="name">Name: A–Z</option>
-                        <option value="size">Largest first</option>
-                        <option value="newest">Recently added</option>
-                    </select>
-                </div>
-
-                <div class="table-wrap">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>FILE NAME</th>
-                                <th>FILE SIZE</th>
-                                <th>TYPE</th>
-                                <th>STATUS</th>
-                                <th>ACTIONS</th>
-                            </tr>
-                        </thead>
-                        <tbody id="fileTableBody"></tbody>
-                    </table>
-                </div>
-
-                <div class="empty-state" id="emptyState" hidden>
-                    <div>▤</div>
-                    <h3>No files found</h3>
-                    <p>Try a different search or select files from your device.</p>
-                </div>
-
-                <div class="table-footer">
-                    <span id="tableSummary">Showing sample files</span>
-                    <span>CloudShare Pro <span class="footer-dot">●</span></span>
-                </div>
-            </section>
-
-            <section class="bottom-grid" id="recent">
-                <article class="info-panel">
-                    <div class="section-heading">
-                        <div>
-                            <h2>Recent Activity</h2>
-                            <p class="muted">Actions in this browser session.</p>
-                        </div>
-                        <span class="activity-symbol">◷</span>
-                    </div>
-                    <div id="activityList" class="activity-list"></div>
-                </article>
-
-                <article class="info-panel" id="about">
-                    <div class="section-heading">
-                        <div>
-                            <h2>About CloudShare</h2>
-                            <p class="muted">Your Cloud Computing mini project.</p>
-                        </div>
-                        <span class="activity-symbol">✦</span>
-                    </div>
-
-                    <p class="about-description">
-                        CloudShare Pro demonstrates file management concepts
-                        through a responsive web interface built with HTML,
-                        CSS and JavaScript.
-                    </p>
-
-                    <div class="tech-tags">
-                        <span>HTML</span>
-                        <span>CSS</span>
-                        <span>JavaScript</span>
-                        <span>GitHub Pages</span>
-                    </div>
-
-                    <div class="security-note">
-                        <span>ⓘ</span>
-                        <p>Frontend demonstration only. Files are not uploaded
-                        to a cloud server or shared with other users.</p>
-                    </div>
-                </article>
-            </section>
-
-            <footer class="page-footer">
-                <span>© 2026 CloudShare Pro · Academic Mini Project</span>
-                <span>Designed for a better file experience ✦</span>
-            </footer>
-
-        </section>
-    </main>
+      <footer>
+        <span>© 2026 CloudShare · Cloud Computing Mini Project</span>
+        <span>Made with creativity ✦</span>
+      </footer>
+    </div>
+  </main>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="js/files.js" defer></script>
-<script src="js/charts.js" defer></script>
-<script src="js/app.js" defer></script>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
 
+  let files = [
+    {id:1,name:"Project_Overview.pdf",size:245760,type:"application/pdf",sample:true,favorite:false,date:Date.now()-3600000},
+    {id:2,name:"Presentation.pptx",size:1843200,type:"application/vnd.openxmlformats-officedocument.presentationml.presentation",sample:true,favorite:false,date:Date.now()-7200000},
+    {id:3,name:"Workspace_Image.png",size:524288,type:"image/png",sample:true,favorite:false,date:Date.now()-86400000}
+  ];
+
+  let activities = [
+    {icon:"✧",title:"Welcome to CloudShare",detail:"Your workspace is ready",time:Date.now()}
+  ];
+  let nextId = 4;
+  let view = "all";
+  let toastTimer;
+
+  function toast(message) {
+    $("toast").textContent = message;
+    $("toast").classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => $("toast").classList.remove("show"),2600);
+  }
+
+  function sizeText(bytes) {
+    if (!bytes) return "0 B";
+    const units = ["B","KB","MB","GB","TB"];
+    const i = Math.min(Math.floor(Math.log(bytes)/Math.log(1024)),units.length-1);
+    return `${(bytes/Math.pow(1024,i)).toFixed(i===0?0:1)} ${units[i]}`;
+  }
+
+  function category(file) {
+    const n = file.name.toLowerCase();
+    const t = (file.type||"").toLowerCase();
+    if (t.startsWith("image/") || /\.(png|jpe?g|gif|webp|svg|bmp|ico)$/.test(n)) return "image";
+    if (t === "application/pdf" || n.endsWith(".pdf")) return "pdf";
+    if (t.includes("document") || t.includes("word") || t.startsWith("text/") || /\.(docx?|txt|rtf|odt|pptx?|xlsx?)$/.test(n)) return "document";
+    return "other";
+  }
+
+  function fileLabel(file) {
+    const c = category(file);
+    if (c === "pdf") return "PDF";
+    if (c === "image") return "IMG";
+    if (c === "document") {
+      const ext = file.name.split(".").pop().toUpperCase();
+      return ext.length <= 4 ? ext : "DOC";
+    }
+    const ext = file.name.split(".").pop().toUpperCase();
+    return ext.length <= 4 && ext !== file.name.toUpperCase() ? ext : "FILE";
+  }
+
+  function addActivity(title,icon="✓") {
+    activities.unshift({icon,title,detail:"Just now",time:Date.now()});
+    activities = activities.slice(0,6);
+    renderActivity();
+  }
+
+  function renderActivity() {
+    const list = $("activityList");
+    list.replaceChildren();
+
+    activities.forEach(a => {
+      const item = document.createElement("div");
+      item.className = "activity";
+
+      const icon = document.createElement("div");
+      icon.className = "activity-symbol";
+      icon.textContent = a.icon;
+
+      const copy = document.createElement("div");
+      copy.className = "activity-copy";
+
+      const title = document.createElement("strong");
+      title.textContent = a.title;
+
+      const detail = document.createElement("small");
+      detail.textContent = a.time === activities[0]?.time
+        ? "Just now"
+        : new Date(a.time).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+
+      copy.append(title,detail);
+      item.append(icon,copy);
+      list.append(item);
+    });
+  }
+
+  function filteredFiles() {
+    const query = $("searchInput").value.trim().toLowerCase();
+    const filter = $("filterSelect").value;
+    const sort = $("sortSelect").value;
+
+    let result = files.filter(f => {
+      const matchesName = f.name.toLowerCase().includes(query);
+      const matchesType = filter === "all" || category(f) === filter;
+      const matchesView = view !== "favorites" || f.favorite;
+      return matchesName && matchesType && matchesView;
+    });
+
+    if (view === "recent") {
+      result.sort((a,b) => b.date-a.date);
+    } else if (sort === "size") {
+      result.sort((a,b) => b.size-a.size);
+    } else if (sort === "newest") {
+      result.sort((a,b) => b.date-a.date);
+    } else {
+      result.sort((a,b) => a.name.localeCompare(b.name));
+    }
+    return result;
+  }
+
+  function makeButton(symbol,title,className,callback) {
+    const button = document.createElement("button");
+    button.className = "small-btn " + (className||"");
+    button.textContent = symbol;
+    button.title = title;
+    button.setAttribute("aria-label",title);
+    button.addEventListener("click",callback);
+    return button;
+  }
+
+  function renderFiles() {
+    const grid = $("fileGrid");
+    grid.replaceChildren();
+
+    const list = filteredFiles();
+    $("emptyState").hidden = list.length > 0;
+    grid.hidden = list.length === 0;
+
+    list.forEach(file => {
+      const card = document.createElement("article");
+      card.className = "file-card";
+
+      const top = document.createElement("div");
+      top.className = "file-card-top";
+
+      const icon = document.createElement("div");
+      icon.className = "file-type-icon " + (category(file)==="document"?"doc":category(file));
+      icon.textContent = fileLabel(file);
+
+      const actions = document.createElement("div");
+      actions.className = "file-actions";
+
+      actions.append(
+        makeButton(file.favorite?"★":"☆",file.favorite?"Remove favorite":"Add favorite",file.favorite?"starred":"",() => {
+          file.favorite = !file.favorite;
+          addActivity((file.favorite?"Added to favorites: ":"Removed favorite: ")+file.name,"☆");
+          render();
+        }),
+        makeButton("↓","Download file","",() => {
+          if (file.sample || !file.blob) {
+            toast("This is an example file. Select a real file to download.");
+            return;
+          }
+          const url = URL.createObjectURL(file.blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = file.name;
+          document.body.append(link);
+          link.click();
+          link.remove();
+          setTimeout(() => URL.revokeObjectURL(url),1000);
+          addActivity("Downloaded "+file.name,"↓");
+          toast("Download started.");
+        }),
+        makeButton("×","Remove file","remove",() => {
+          if (file.sample) {
+            toast("Example files cannot be removed.");
+            return;
+          }
+          files = files.filter(f => f.id !== file.id);
+          addActivity("Removed "+file.name,"×");
+          render();
+          toast("File removed from this session.");
+        })
+      );
+
+      top.append(icon,actions);
+
+      const name = document.createElement("div");
+      name.className = "file-name";
+      name.textContent = file.name;
+      name.title = file.name;
+
+      const meta = document.createElement("div");
+      meta.className = "file-meta";
+      meta.textContent = sizeText(file.size)+" · "+new Date(file.date).toLocaleDateString();
+
+      const bottom = document.createElement("div");
+      bottom.className = "file-card-bottom";
+
+      const badge = document.createElement("span");
+      badge.className = "file-badge "+(file.sample?"":"selected");
+      badge.textContent = file.sample?"Example file":"Selected locally";
+
+      const type = document.createElement("span");
+      type.style.cssText = "font-size:9px;color:var(--muted)";
+      type.textContent = category(file).toUpperCase();
+
+      bottom.append(badge,type);
+      card.append(top,name,meta,bottom);
+      grid.append(card);
+    });
+
+    updateStats();
+  }
+
+  function updateStats() {
+    const realFiles = files.filter(f => !f.sample);
+    const totalSize = realFiles.reduce((sum,f) => sum+f.size,0);
+    $("totalFiles").textContent = String(files.length).padStart(2,"0");
+    $("totalSize").textContent = sizeText(totalSize);
+    $("totalCategories").textContent = new Set(realFiles.map(category)).size;
+    $("totalFavorites").textContent = files.filter(f => f.favorite).length;
+    $("navCount").textContent = String(files.length).padStart(2,"0");
+  }
+
+  function render() {
+    renderFiles();
+    renderActivity();
+  }
+
+  function addFiles(fileList) {
+    const selected = Array.from(fileList||[]);
+    if (!selected.length) return;
+
+    selected.forEach(file => {
+      files.push({
+        id:nextId++,
+        name:file.name,
+        size:file.size,
+        type:file.type,
+        blob:file,
+        sample:false,
+        favorite:false,
+        date:Date.now()
+      });
+      addActivity("Added "+file.name,"↑");
+    });
+
+    view = "all";
+    $("fileHeading").textContent = "Your files";
+    $("fileSubtitle").textContent = "Everything you have added, all in one place.";
+    render();
+    toast(selected.length+" file(s) added to your workspace.");
+  }
+
+  const fileInput = $("fileInput");
+  $("browseBtn").addEventListener("click",() => fileInput.click());
+  $("topUpload").addEventListener("click",() => fileInput.click());
+  $("heroUpload").addEventListener("click",() => fileInput.click());
+
+  fileInput.addEventListener("change",e => {
+    addFiles(e.target.files);
+    e.target.value = "";
+  });
+
+  ["dragenter","dragover"].forEach(eventName => {
+    $("dropzone").addEventListener(eventName,e => {
+      e.preventDefault();
+      $("dropzone").classList.add("dragging");
+    });
+  });
+
+  ["dragleave","drop"].forEach(eventName => {
+    $("dropzone").addEventListener(eventName,e => {
+      e.preventDefault();
+      $("dropzone").classList.remove("dragging");
+    });
+  });
+
+  $("dropzone").addEventListener("drop",e => addFiles(e.dataTransfer.files));
+
+  $("searchInput").addEventListener("input",renderFiles);
+  $("filterSelect").addEventListener("change",renderFiles);
+  $("sortSelect").addEventListener("change",renderFiles);
+
+  $("resetView").addEventListener("click",() => {
+    view = "all";
+    $("searchInput").value = "";
+    $("filterSelect").value = "all";
+    $("sortSelect").value = "name";
+    $("fileHeading").textContent = "Your files";
+    $("fileSubtitle").textContent = "Everything you have added, all in one place.";
+    document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
+    document.querySelector('.nav button[data-view="all"][data-target="home"]').classList.add("active");
+    renderFiles();
+  });
+
+  document.querySelectorAll(".nav button").forEach(button => {
+    button.addEventListener("click",() => {
+      document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
+      button.classList.add("active");
+
+      if (button.dataset.view) {
+        view = button.dataset.view;
+        $("fileHeading").textContent = view==="favorites"?"Your favorites":view==="recent"?"Recent files":"Your files";
+        $("fileSubtitle").textContent = view==="favorites"?"The files you have starred.":view==="recent"?"Your newest files first.":"Everything you have added, all in one place.";
+        renderFiles();
+      }
+
+      const target = $(button.dataset.target||"home");
+      target?.scrollIntoView({behavior:"smooth",block:"start"});
+      closeSidebar();
+      $("breadcrumbTitle").textContent = button.textContent.trim().replace(/\s+/g," ");
+    });
+  });
+
+  $("themeBtn").addEventListener("click",() => {
+    document.body.classList.toggle("dark");
+    const dark = document.body.classList.contains("dark");
+    $("themeBtn").textContent = dark?"☀":"☾";
+    toast(dark?"Dark mode enabled":"Light mode enabled");
+  });
+
+  const sidebar = $("sidebar");
+  const overlay = $("overlay");
+
+  function closeSidebar() {
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
+  }
+
+  $("menuBtn").addEventListener("click",() => {
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("show");
+  });
+  overlay.addEventListener("click",closeSidebar);
+
+  const hour = new Date().getHours();
+  $("greeting").textContent = hour<12?"Good morning!":hour<17?"Good afternoon!":"Good evening!";
+
+  render();
+})();
+</script>
 </body>
 </html>
 ```
